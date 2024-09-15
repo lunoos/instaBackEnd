@@ -19,6 +19,7 @@ import com.insta.backend.entity.Followers;
 import com.insta.backend.entity.Following;
 import com.insta.backend.entity.Post;
 import com.insta.backend.entity.User;
+import com.insta.backend.exception.ResourceNotFoundException;
 import com.insta.backend.strategy.FeedStratergy;
 
 import jakarta.transaction.Transactional;
@@ -89,8 +90,10 @@ public class InstaRestService {
 		List<Post> result = null;
 		try {
 			result = feedStatMap.get("latestFeedStratergy").getFeed(userId);
+			if(result!=null)
+				throw new ResourceNotFoundException("Error while fetcing user feed");
 		} catch (Exception e) {
-			throw new RuntimeErrorException(null, "Error while fetcing user feed");
+			throw new ResourceNotFoundException("Error while fetcing user feed");
 		}
 		return result;
 	}

@@ -1,6 +1,7 @@
 package com.insta.backend.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -30,5 +31,7 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	 public void decrementFollowing(@Param("id") Long id);
 	 
 	 public List<User> findByIdNotIn(List<Long> userId);
+	 
+	 public Optional<User> findByEmail(String email);
 	 
 }

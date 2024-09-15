@@ -1,8 +1,12 @@
 package com.insta.backend.entity;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
@@ -16,7 +20,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "USER_TABLE")
-public class User {
+public class User implements UserDetails{
     @Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
@@ -31,6 +35,12 @@ public class User {
     
     @Column(name = "FOLLOWING")
     private int following;
+    
+    @Column(name = "EMAIL",nullable = false)
+    private String email;
+    
+    @Column(name = "PASSWORD",nullable = false)
+    private String password;
 
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
@@ -96,6 +106,55 @@ public class User {
 		return "User [id=" + id + ", name=" + name + ", followers=" + followers + ", following=" + following
 				+ ", posts=" + posts + "]";
 	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return List.of();
+	}
+
+	@Override
+	public String getPassword() {
+		return password;
+	}
+
+	@Override
+	public String getUsername() {
+		 return email;
+	}
+	
+	@Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+    
+    
 
     
 }

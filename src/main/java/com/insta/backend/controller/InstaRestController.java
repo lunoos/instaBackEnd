@@ -4,6 +4,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.insta.backend.DTO.BasicUserProfileDTO;
 import com.insta.backend.entity.Post;
 import com.insta.backend.entity.User;
+import com.insta.backend.logging.Loggable;
 import com.insta.backend.service.InstaRestService;
 
 @RestController
@@ -34,6 +36,7 @@ public class InstaRestController {
 		return ResponseEntity.ok(instaRestService.uploadPost(post));
 	}
 	
+	@Loggable
 	@GetMapping("/updateConnections")
 	public ResponseEntity<String> updateConnection(@RequestParam Long userId,@RequestParam Long conUseId, @RequestParam String actions){
 		return ResponseEntity.ok(instaRestService.updateConncDet(userId, conUseId, actions));
@@ -60,7 +63,7 @@ public class InstaRestController {
 		return ResponseEntity.ok(instaRestService.deletePostById(postId));
 	}
 	
-	@GetMapping("/followRec")
+	@GetMapping(value="/followRec",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<BasicUserProfileDTO>> followRec(@RequestParam Long userId){
 		return ResponseEntity.ok(instaRestService.getFollowRec(userId));
 	}
